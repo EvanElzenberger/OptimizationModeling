@@ -93,7 +93,9 @@ print(f'The total salary used is ${sum(report.Salary)}.')
 print(f'The optimal team average points per game is {obj_val:.2f}.')
 ```
 The total salary used is $44600.
+
 The optimal teams' average points per game is 18.00.
+
 
 ## Pyomo Optimal Quantity and Placement Exam Grade: 100%
 
