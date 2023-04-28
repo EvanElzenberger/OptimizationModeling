@@ -40,35 +40,35 @@ Create a team based on the actual data and following constrainsts
 
 ```python
 ## Initialize Model
-model2 = pe.ConcreteModel()
+model = pe.ConcreteModel()
 
 ##Define Decision Variables
-model2.x = pe.Var(PSActual.index, domain = pe.Binary)
+model.x = pe.Var(PSActual.index, domain = pe.Binary)
 
 ## Define Objective Function
-model2.obj = pe.Objective(expr = sum([PSActual.p.loc[i] * model2.x[i] for i in PSActual.index]),
+model.obj = pe.Objective(expr = sum([PSActual.p.loc[i] * model.x[i] for i in PSActual.index]),
                                  sense = pe.maximize)
                                  
 ## Salary Constraint 
-model2.salary = pe.Constraint(expr = sum([PSActual.Salary.loc[i] * model2.x[i] for i in PSActual.index]) <= 50000)
+model.salary = pe.Constraint(expr = sum([PSActual.Salary.loc[i] * model.x[i] for i in PSActual.index]) <= 50000)
 
 ## PLayer Util Constraint
-model2.LinkF = pe.Constraint(expr=sum([model2.x[i] for i in PSActual.index]) ==9)
+model.LinkF = pe.Constraint(expr=sum([model.x[i] for i in PSActual.index]) ==9)
 
 ## Players Constraints
-model2.C = pe.Constraint(expr=sum([PSActual.C.loc[i]*model2.x[i] for i in PSActual.index]) >=2)
-model2.W = pe.Constraint(expr=sum([PSActual.W.loc[i]*model2.x[i] for i in PSActual.index]) >=3)
-model2.D = pe.Constraint(expr=sum([PSActual.D.loc[i]*model2.x[i] for i in PSActual.index]) >=2)
-model2.G = pe.Constraint(expr=sum([PSActual.G.loc[i]*model2.x[i] for i in PSActual.index]) ==1)
+model.C = pe.Constraint(expr=sum([PSActual.C.loc[i]*model.x[i] for i in PSActual.index]) >=2)
+model.W = pe.Constraint(expr=sum([PSActual.W.loc[i]*model.x[i] for i in PSActual.index]) >=3)
+model.D = pe.Constraint(expr=sum([PSActual.D.loc[i]*model.x[i] for i in PSActual.index]) >=2)
+model.G = pe.Constraint(expr=sum([PSActual.G.loc[i]*model.x[i] for i in PSActual.index]) ==1)
 
 ##Solve
-opt2 = pe.SolverFactory('glpk')      
-result2 = opt2.solve(model2)
-obj_val2 = model2.obj.expr()
+opt = pe.SolverFactory('glpk')      
+result = opt.solve(model)
+obj_val = model.obj.expr()
 
 ## Create a report of the selected team
 team = []
-for DV in model2.component_objects(pe.Var):     
+for DV in model.component_objects(pe.Var):     
     for i in DV:
         if DV[i].value == 1:
             team.append([i, PSActual.p[i], PSActual.TeamAbbrev[i], PSActual.Roster_Position[i], PSActual.Salary[i]])
@@ -89,9 +89,9 @@ report.columns = ['Name', 'P', 'Team', 'Position', 'Salary']
 
 Report the total salary spent and points per game generated
 ```python
-obj_val = model2.obj.expr()
-print(f'The total salary used is ${sum(report2.Salary)}.')
+obj_val = model.obj.expr()
+print(f'The total salary used is ${sum(report.Salary)}.')
 print(f'The optimal team average points per game is {obj_val:.2f}.')
 ```
 The total salary used is $44600.
-The optimal team average points per game is 18.00.
+The optimal teams' average points per game is 18.00.
