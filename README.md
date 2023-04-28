@@ -60,7 +60,7 @@ model.LinkF = pe.Constraint(expr=model.x['Fig'] <= demand.loc['Fig', 'demand'] *
 opt = pe.SolverFactory('glpk')
 result = opt.solve(model)
 obj_val = model.obj.expr()
-print(f'optimal objective value maximum profit = ${obj_val:.2f}')
+print(f'The optimal objective value for maximum profit = ${obj_val:.2f}')
 dv_keys = list(model.x.keys())
 solution = pd.DataFrame()
 for DV in model.component_objects(pe.Var):
@@ -184,10 +184,3 @@ plt.title('Location Y by Location X')
 plt.xlabel('Location X')
 plt.show()
 ```
-
-## Topic 2
-
-### Data Source:
-
-### Exam Highlights: 
-- 
