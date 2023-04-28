@@ -25,9 +25,7 @@ This course explores modeling and solving business decision problems. It covers 
 
 ### Exam Highlights:
 #### Problem One: Flavors
- - Objective: Maximize profit by determining optimal production quantities for five flavors (Apple, Banana, Chocolate, Elderberry, and Fig).
- - Considerations: Pricing, costs, fixed setup costs, mixing, preparation, blending, and packaging constraints.
- - Demand Constraints: Ensuring the production quantities satisfy the demand for each flavor.
+- Part A. Determine the optimal quantities of each flavor to maximize profit.
  ```python
 ## Initialize Model
 model = pe.ConcreteModel()
@@ -57,10 +55,6 @@ model.LinkE = pe.Constraint(expr=model.x['Elderberry'] <= demand.loc['Elderberry
 model.LinkF = pe.Constraint(expr=model.x['Fig'] <= demand.loc['Fig', 'demand'] * model.y['Fig'])
 opt = pe.SolverFactory('glpk')
 result = opt.solve(model)
-print(result.solver.status, result.solver.termination_condition)
-```
- - Solution: The optimal production quantities and binary variables for each flavor.
-```python
 obj_val = model.obj.expr()
 print(f'optimal objective value maximum profit = ${obj_val:.2f}')
 dv_keys = list(model.x.keys())
@@ -71,6 +65,58 @@ for DV in model.component_objects(pe.Var):
         solution.loc[DV.name, var] = DV[var].value
 solution
 ```
+|       | Apple | Banana | Chocolate | Elderberry |  Fig  |
+|-------|-------|--------|-----------|------------|-------|
+|   x   | 200.0 | 150.0  |    0.0    |    0.0     | 200.0 |
+|   y   |  1.0  |  1.0   |    0.0    |    0.0     |  1.0  |
+
+- Part B. Modify the model to ensure that at least one of Chocolate or Elderberry is produced.
+```python 
+## Initialize Model
+model2 = pe.ConcreteModel()
+
+        ## Define Decision Variables
+model2.x = pe.Var(DV_indexes, domain = pe.NonNegativeReals)
+model2.y = pe.Var(DV_indexes, domain = pe.Binary)
+# Define Objective function
+model2.obj = pe.Objective(expr=sum([cost.loc['Price', i]*model2.x[i] for i in DV_indexes])
+                             - sum([cost.loc['Cost',i]*model2.x[i] for i in DV_indexes])
+                             - sum([cost.loc['Fixed Setup Cost',i]*model2.y[i] for i in DV_indexes]),
+                            sense=pe.maximize)
+# Define Constraints
+model2.mixing = pe.Constraint(expr = sum([coef.loc['Mixing',i]*model2.x[i]for i in DV_indexes]) 
+                                        <= rhs.loc['Mixing', 'rhs'])
+model2.preperation = pe.Constraint(expr = sum([coef.loc['Preparation',i]*model2.x[i]for i in DV_indexes]) 
+                                             <= rhs.loc['Preparation', 'rhs'])
+model2.blending = pe.Constraint(expr = sum([coef.loc['Blending',i]*model2.x[i]for i in DV_indexes]) 
+                                          <= rhs.loc['Blending', 'rhs'])
+model2.packaging = pe.Constraint(expr = sum([coef.loc['Packaging',i]*model2.x[i]for i in DV_indexes]) 
+                                           <= rhs.loc['Packaging', 'rhs'])
+#Chocolate or Elderberry
+model2.ChocEld = pe.Constraint(expr = model2.x['Chocolate']+model2.x['Elderberry'] >= 1)
+#Demand Constraints
+model2.LinkA = pe.Constraint(expr=model2.x['Apple'] <= demand.loc['Apple', 'demand'] * model2.y['Apple'])
+model2.LinkB = pe.Constraint(expr=model2.x['Banana'] <= demand.loc['Banana', 'demand'] * model2.y['Banana'])
+model2.LinkC = pe.Constraint(expr=model2.x['Chocolate'] <= demand.loc['Chocolate', 'demand'] * model2.y['Chocolate'])
+model2.LinkE = pe.Constraint(expr=model2.x['Elderberry'] <= demand.loc['Elderberry', 'demand'] * model2.y['Elderberry'])
+model2.LinkF = pe.Constraint(expr=model2.x['Fig'] <= demand.loc['Fig', 'demand'] * model2.y['Fig'])
+# Solve
+opt2 = pe.SolverFactory('glpk')      
+result2 = opt2.solve(model2)
+obj_val2 = model2.obj.expr()
+print(f'The optimal objective value for maximum profit = ${obj_val2:.2f}')
+DV_solution = pd.DataFrame()
+for DV in model2.component_objects(pe.Var):
+    for var in DV:
+        DV_solution.loc[DV.name, var] = DV[var].value
+DV_solution
+```
+- The optimal objective value for maximum profit = $1212.05
+|       | Apple | Banana | Chocolate | Elderberry |  Fig  |
+|-------|-------|--------|-----------|------------|-------|
+|   x   | 200.0 | 149.5  |    0.0    |    1.0     | 200.0 |
+|   y   |  1.0  |  1.0   |    0.0    |    1.0     |  1.0  |
+
 #### Problem Two: Optimal Placement
  - Objective: Identify the optimal location for a roasting facility considering distances to fifteen existing shops.
  - Distance Metric: Dk = |xk - x| + |yk - y|
