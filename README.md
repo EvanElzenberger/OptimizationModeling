@@ -74,7 +74,7 @@ for DV in model.component_objects(pe.Var):
 report = pd.DataFrame(team)
 report.columns = ['Name', 'P', 'Team', 'Position', 'Salary']
 ```
-|  #  |         Name         |  P  | Team | Position | Salary |
+|  Count  |         Name         |  P  | Team | Position | Salary |
 |:---:|:--------------------|:---:|:----:|:--------:|-------:|
 |  1  |  Michael McLeod      |  2  |  NJ  | C/UTIL   |  2500  |
 |  2  |  Kyle Connor         |  2  | WPG  | W/UTIL   |  8600  |
