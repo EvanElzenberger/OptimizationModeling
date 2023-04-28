@@ -72,9 +72,9 @@ for DV in model.component_objects(pe.Var):
         if DV[i].value == 1:
             team.append([i, PSActual.p[i], PSActual.TeamAbbrev[i], PSActual.Roster_Position[i], PSActual.Salary[i]])
 report = pd.DataFrame(team)
-report.columns = ['Name', 'P', 'Team', 'Position', 'Salary']
+report.columns = ['Name', 'Points', 'Team', 'Position', 'Salary']
 ```
-|  Count  |         Name         |  P  | Team | Position | Salary |
+|  Count  |         Name         |  Points | Team | Position | Salary |
 |:---:|:--------------------|:---:|:----:|:--------:|-------:|
 |  1  |  Michael McLeod      |  2  |  NJ  | C/UTIL   |  2500  |
 |  2  |  Kyle Connor         |  2  | WPG  | W/UTIL   |  8600  |
@@ -94,7 +94,7 @@ print(f'The optimal team average points per game is {obj_val:.2f}.')
 ```
 The total salary used is $44600.
 
-The optimal teams' average points per game is 18.00.
+The optimal teams' total points per game is 18.00.
 
 
 ## Pyomo Optimal Quantity and Placement Exam Grade: 100%
