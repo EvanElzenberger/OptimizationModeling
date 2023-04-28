@@ -25,7 +25,11 @@ This course explores modeling and solving business decision problems. It covers 
 
 ### Exam Highlights:
 #### Problem One: Flavors
-- Part A. Determine the optimal quantities of each flavor to maximize profit.
+- Objective: Maximize profit by determining optimal production quantities for five flavors (Apple, Banana, Chocolate, Elderberry, and Fig).
+- Considerations: Pricing, costs, fixed setup costs, mixing, preparation, blending, and packaging constraints.
+- Demand Constraints: Ensuring the production quantities satisfy the demand for each flavor.
+- Solution: The optimal production quantities and binary variables for each flavor.
+Part A. Determine the optimal quantities of each flavor to maximize profit.
  ```python
 ## Initialize Model
 model = pe.ConcreteModel()
@@ -71,7 +75,7 @@ solution
 |   x   | 200.0 | 150.0  |    0.0    |    0.0     | 200.0 |
 |   y   |  1.0  |  1.0   |    0.0    |    0.0     |  1.0  |
 
-- Part B. Modify the model to ensure that at least one of Chocolate or Elderberry is produced.
+Part B. Modify the model to ensure that at least one of Chocolate or Elderberry is produced.
 ```python 
 ## Initialize Model
 model2 = pe.ConcreteModel()
@@ -124,7 +128,7 @@ DV_solution
  - Distance Metric: Dk = |xk - x| + |yk - y|
  - Data: Locations of the existing shops in terms of (x, y) coordinates.
  - Solution: The optimal (x, y) coordinates representing the new roasting facility location
-- Part A: Use a vizualization package to plot the locations of the coffee shops based on the provided data.
+Part A: Use a vizualization package to plot the locations of the coffee shops based on the provided data.
 ```python
 
 
@@ -136,8 +140,7 @@ plt.title('Location Y by Location X')
 plt.xlabel('Location X')
 plt.show()
 ```
-- Part B: Identify the optimal location for the roasting facility by minimizing the total distance to each shop.
-
+Part B: Identify the optimal location for the roasting facility by minimizing the total distance to each shop.
 ```python
 # Create the Decision Variables and the Objective Function. 
 model = pe.ConcreteModel()
@@ -163,12 +166,12 @@ for DV in model.component_objects(pe.Var):
 solution
 ```
 - The optimal objective value for maximum profit = $665.00
+
 |   x  |   y  |
 |------|------|
 | 43.4 | 59.0 |
 
-- Part C: Plot the locations with the selected location marked as a red asterisk.
-
+Part C: Plot the locations with the selected location marked as a red asterisk.
 ```python
 .figure(figsize = (8,5))
 sns.scatterplot(x = 'x', y = 'y', data = dfloc)
