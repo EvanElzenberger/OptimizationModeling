@@ -27,7 +27,7 @@ The project focuses on solving an optimization problem in the context of Daily F
 ### Data Source:  [TBA](TBA)
 
 ### Exam Highlights:
-Create a team based on the actual data and following constrainsts
+Create the optimal team based on the actual data and following constrainsts that generates to maximum amount of points
 - The fantasy team must have nine players.
 - The salary of your nine players may not exceed $50,000.
 - The makeup of the team in terms of positions is:
