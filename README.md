@@ -19,15 +19,15 @@ This course explores modeling and solving business decision problems. It covers 
   - Seaborn: Generating scatterplots for location visualization.
   - Numpy: Performing numerical computations and array operations.
 
-## Pyomo Optimal Quantity and Placement
+## Pyomo Optimal Quantity and Placement Exam Grade: 100%
 
 ### Data Source: Provided by Professor [Excel File](https://github.com/EvanElzenberger/OptimizationModeling/files/11349653/PyomoExam2.xlsx)
 
 ### Exam Highlights:
-- Problem One: Flavors
-  - Objective: Maximize profit by determining optimal production quantities for five flavors (Apple, Banana, Chocolate, Elderberry, and Fig).
-  - Considerations: Pricing, costs, fixed setup costs, mixing, preparation, blending, and packaging constraints.
-  - Demand Constraints: Ensuring the production quantities satisfy the demand for each flavor.
+#### Problem One: Flavors
+ - Objective: Maximize profit by determining optimal production quantities for five flavors (Apple, Banana, Chocolate, Elderberry, and Fig).
+ - Considerations: Pricing, costs, fixed setup costs, mixing, preparation, blending, and packaging constraints.
+ - Demand Constraints: Ensuring the production quantities satisfy the demand for each flavor.
  ```python
 ## Initialize Model
 model = pe.ConcreteModel()
@@ -50,7 +50,6 @@ model.blending = pe.Constraint(expr = sum([coef.loc['Blending',i]*model.x[i]for 
 model.packaging = pe.Constraint(expr = sum([coef.loc['Packaging',i]*model.x[i]for i in DV_indexes]) 
                                            <= rhs.loc['Packaging', 'rhs'])
 # Demand Constraints
-#Demand Constraints
 model.LinkA = pe.Constraint(expr=model.x['Apple'] <= demand.loc['Apple', 'demand'] * model.y['Apple'])
 model.LinkB = pe.Constraint(expr=model.x['Banana'] <= demand.loc['Banana', 'demand'] * model.y['Banana'])
 model.LinkC = pe.Constraint(expr=model.x['Chocolate'] <= demand.loc['Chocolate', 'demand'] * model.y['Chocolate'])
@@ -60,12 +59,23 @@ opt = pe.SolverFactory('glpk')
 result = opt.solve(model)
 print(result.solver.status, result.solver.termination_condition)
 ```
-  - Solution: The optimal production quantities and binary variables for each flavor.
-- Problem Two: Optimal Placement
-  - Objective: Identify the optimal location for a roasting facility considering distances to fifteen existing shops.
-  - Distance Metric: Dk = |xk - x| + |yk - y|
-  - Data: Locations of the existing shops in terms of (x, y) coordinates.
-  - Solution: The optimal (x, y) coordinates representing the new roasting facility location
+ - Solution: The optimal production quantities and binary variables for each flavor.
+```python
+obj_val = model.obj.expr()
+print(f'optimal objective value maximum profit = ${obj_val:.2f}')
+dv_keys = list(model.x.keys())
+print('The cookie types selected are')
+solution = pd.DataFrame()
+for DV in model.component_objects(pe.Var):
+    for var in DV:
+        solution.loc[DV.name, var] = DV[var].value
+solution
+```
+#### Problem Two: Optimal Placement
+ - Objective: Identify the optimal location for a roasting facility considering distances to fifteen existing shops.
+ - Distance Metric: Dk = |xk - x| + |yk - y|
+ - Data: Locations of the existing shops in terms of (x, y) coordinates.
+ - Solution: The optimal (x, y) coordinates representing the new roasting facility location
 
 ## Topic 2
 
