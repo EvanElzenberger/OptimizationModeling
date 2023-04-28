@@ -30,8 +30,7 @@ The project focuses on solving an optimization problem in the context of Daily F
 Create a team based on the actual data and following constrainsts
 - The fantasy team must have nine players.
 - The salary of your nine players may not exceed $50,000.
-- You need players from at least three different teams.
-- The makeup of the team in terms of positions is:
+The makeup of the team in terms of positions is:
 - Two Centers (C)
 - Three Wings (W)
 - Two Defenders (D)
