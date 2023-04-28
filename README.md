@@ -3,7 +3,7 @@
 ## Course Description:
 This course explores modeling and solving business decision problems. It covers optimization models including linear programming, integer programming, transportation, assignment, network optimization, and nonlinear programming. Students learn to analyze scenarios, formulate models using software tools, interpret output, and present project reports.
 
-## Learning Outcomes:
+## Skills Learned:
 - Identify problems appropriate for optimization.
 - Understand the challenges with solution techniques with optimization problems.
 - Learn to convert written descriptions into optimization problems.
