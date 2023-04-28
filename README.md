@@ -11,7 +11,7 @@ This course explores modeling and solving business decision problems. It covers 
 
 ## Software:
 - Microsoft Excel Solver 
-- Open-souce software [Pyomo](http://www.pyomo.org/about) [SciPy](https://docs.scipy.org/doc/scipy/tutorial/general.html)
+- Open-souce software [Pyomo](http://www.pyomo.org/about), [SciPy](https://docs.scipy.org/doc/scipy/tutorial/general.html)
 - Python
   - Pandas: Used for data import, manipulation and analysis.
   - Pyomo: Formulating and solving optimization models.
